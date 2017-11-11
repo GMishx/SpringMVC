@@ -2,6 +2,7 @@ package com.siemens.login;
 
 import java.io.IOException;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -30,7 +31,19 @@ public class LoginServlet extends HttpServlet {
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
-		response.getWriter().append(System.lineSeparator() + "Username: " + username + ", Password: " + password);
+		String nextPage;
+
+		if (username.equals("siemens") && password.equals("siemens")) {
+			request.setAttribute("loginMessage", "User loggedin");
+			nextPage = "success.jsp";
+		} else {
+			request.setAttribute("loginMessage", "Invalid credentials");
+			nextPage = "index.jsp";
+		}
+
+		RequestDispatcher rd = request.getRequestDispatcher(nextPage);
+		rd.forward(request, response);
+
 	}
 
 	/**
